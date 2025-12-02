@@ -7,7 +7,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder, StandardScaler
 
 # Load the data
-drug_df = pd.read_csv("data/drug.csv")
+drug_df = pd.read_csv("data/drug200.csv")
 drug_df = drug_df.sample(frac=1)
 
 
