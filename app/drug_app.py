@@ -2,7 +2,7 @@ import gradio as gr
 import skops.io as sio
 
 # Get the list of ALL types found in the file
-all_untrusted_types = sio.get_untrusted_types("./model/drug_pipeline.skops")
+all_untrusted_types = sio.get_untrusted_types(file="./model/drug_pipeline.skops")
 
 # Print and review the list (e.g., ['numpy.dtype', 'sklearn.pipeline.Pipeline', ...])
 # print(all_untrusted_types)
@@ -62,5 +62,5 @@ gr.Interface(
     title=title,
     description=description,
     article=article,
-    theme=gr.themes.Soft(),
+    # theme=gr.themes.Soft(),
 ).launch()
