@@ -19,4 +19,5 @@ jobs:
           HF: ${{ secrets.HF }}
         run: |
           pip install huggingface_hub
-          make hf-loginmake deploy HF=$HF
+          make hf-login
+          make deploy HF=$HF
