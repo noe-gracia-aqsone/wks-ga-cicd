@@ -18,6 +18,5 @@ jobs:
         env:
           HF: ${{ secrets.HF }}
         run: |
-          pip install huggingface_hub
           make hf-login
           make deploy HF=$HF
