@@ -4,3 +4,4 @@ black
 pandas
 matplotlib
 gradio
+huggingface_hub
