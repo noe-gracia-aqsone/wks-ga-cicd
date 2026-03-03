@@ -51,7 +51,7 @@ examples = [
 
 title = "Drug Classification"
 description = "Enter the details to correctly identify Drug type?"
-article = "This app is a part of the Beginner's Guide to CI/CD for Machine Learning. It teaches how to automate training, evaluation, and deployment of models to Hugging Face using GitHub Actions."
+article = "Automate training, evaluation, and deployment of models to Hugging Face using GitHub Actions."
 
 
 gr.Interface(
