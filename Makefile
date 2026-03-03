@@ -27,11 +27,12 @@ hf-login:
 	git pull origin update
 	git switch update
 	pip install -U "huggingface_hub[cli]"
-	python -m huggingface-cli login --token $(HF) --add-to-git-credential
+	# the CLI is installed as a console script; invoke it directly instead of via python -m
+	huggingface-cli login --token $(HF) --add-to-git-credential
 
 push-hub:
 	huggingface-cli upload milotix/DrugClassification ./app --repo-type=space --commit-message="Sync App files"
-	huggingface-cli upload milotix/DrugClassification ./model /model --repo-type=space --commit-message="Sync Model"
+	huggingface-cli upload milotix/DrugClassification ./model --repo-type=space --commit-message="Sync Model"
 	huggingface-cli upload milotix/DrugClassification ./results /metrics --repo-type=space --commit-message="Sync Model"
 
 deploy: hf-login push-hub
