@@ -1,0 +1,12 @@
+md5: 410560517717b368ca55d4f35bcd5896
+frozen: true
+deps:
+- path: drug200.csv
+  repo:
+    url: https://huggingface.co/datasets/milotix/drug200
+    rev_lock: 871c1af62d1403f1433e0d7c9803d7dd8abe84c8
+outs:
+- md5: 40b0b6855f5040824e2db92878213077
+  size: 6029
+  hash: md5
+  path: drug200.csv
