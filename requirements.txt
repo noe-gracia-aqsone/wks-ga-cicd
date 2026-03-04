@@ -3,5 +3,5 @@ skops
 black
 pandas
 matplotlib
-gradio
-huggingface_hub[cli]
+gradio>=5.0.0
+pyaudioop>=0.2.1
