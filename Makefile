@@ -23,15 +23,16 @@ update-branch:
 	git commit -am "Update with new results"
 	git push --force origin HEAD:update
 
-hf-login: 
+hf-login:
+	# Install the latest version with CLI support
 	pip install -U "huggingface_hub[cli]"
-	git pull origin update
-	git switch update
-	huggingface-cli login --token $(HF) --add-to-git-credential
+	# Use the new 'hf' binary for authentication
+	hf auth login --token $(HF) --add-to-git-credential
 
 push-hub:
-	python -m huggingface_hub.commands.huggingface_cli upload milotix/DrugClassification ./app --repo-type=space --commit-message="Sync App files"
-	python -m huggingface_hub.commands.huggingface_cli upload milotix/DrugClassification ./model /model --repo-type=space --commit-message="Sync Model"
-	python -m huggingface_hub.commands.huggingface_cli upload milotix/DrugClassification ./results /metrics --repo-type=space --commit-message="Sync Model"
-
+	# Use the new 'hf upload' syntax
+	hf upload milotix/DrugClassification ./app . --repo-type=space --commit-message="Sync App files"
+	hf upload milotix/DrugClassification ./model /model --repo-type=space --commit-message="Sync Model"
+	hf upload milotix/DrugClassification ./results /metrics --repo-type=space --commit-message="Sync Metrics"
+	
 deploy: hf-login push-hub
