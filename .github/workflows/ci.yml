@@ -20,7 +20,7 @@ jobs:
 
       # TODO 2: configure Python using actions/setup-python.
       # Use `python-version: ${{ env.PYTHON_VERSION }}`
-      - ?
+      #- ?
 
       # TODO 3: keep setup-cml and setup-dvc, then explain in the workshop
       # why each one is needed in ML CI/CD.
