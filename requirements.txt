@@ -4,4 +4,3 @@ black
 pandas
 matplotlib
 gradio
-PyAudio
