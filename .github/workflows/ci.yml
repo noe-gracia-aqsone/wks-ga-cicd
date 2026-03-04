@@ -2,20 +2,28 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions: write-all
 jobs:
-  build:
+  train-and-report:
     runs-on: ubuntu-latest
+    # TODO 1: add an `env:` block with:
+    # - PYTHON_VERSION set to a stable version (example: "3.11")
+    # - HF_DATASET_URL from repository variable `vars.HF_DATASET_URL`
+    # - HF_TOKEN from repository secret `secrets.HF_TOKEN`
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
+
+      # TODO 2: configure Python using actions/setup-python.
+      # Use `python-version: ${{ env.PYTHON_VERSION }}`
+      - ?
+
+      # TODO 3: keep setup-cml and setup-dvc, then explain in the workshop
+      # why each one is needed in ML CI/CD.
       - uses: iterative/setup-cml@v2
         with:
           vega: false
@@ -25,10 +33,24 @@ jobs:
         run: |
           make install
 
+      # TODO 4: split this into 2 explicit steps:
+      # - "Pull data with DVC"
+      # - "Train model"
+      # Tip: use `dvc pull data/drug200.csv.dvc` then `python train.py`
       - name: Train with DVC import (HF source)
         run: make train_dvc
 
-      - name: Create CML report
+      # TODO 5: add one step before report to print DVC status in logs.
+      # Example: `dvc status -c`
+
+      # TODO 6: uncomment `HF_TOKEN` below and wire it from env/secrets.
+      - name: Create CML report and comment PR
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # HF_TOKEN: ${{ env.HF_TOKEN }}
         run: make eval_cml_and_dvc
+
+      # TODO 7 (optional): create a second job `deploy-space`
+      # that depends on `train-and-report` and only runs on push to `main`.
+      # In that job, call:
+      #   make deploy HF=${{ secrets.HF_TOKEN }}
