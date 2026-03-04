@@ -27,12 +27,15 @@ def predict_drug(age, sex, blood_pressure, cholesterol, na_to_k_ratio):
         str: Predicted drug label
     """
     features = [age, sex, blood_pressure, cholesterol, na_to_k_ratio]
-    probabilities = pipe.predict_proba([features])[0]
-    class_probabilities = {
-        label: float(prob)
-        for label, prob in zip(pipe.classes_, probabilities)
-    }
-    return class_probabilities
+    try:
+        probabilities = pipe.predict_proba([features])[0]
+        return {
+            str(label): float(prob)
+            for label, prob in zip(pipe.classes_, probabilities)
+        }
+    except Exception:
+        predicted_drug = pipe.predict([features])[0]
+        return str(predicted_drug)
 
 
 inputs = [
@@ -42,7 +45,7 @@ inputs = [
     gr.Radio(["HIGH", "NORMAL"], label="Cholesterol"),
     gr.Slider(6.2, 38.2, step=0.1, label="Na_to_K"),
 ]
-outputs = [gr.Label(num_top_classes=5)]
+outputs = gr.Label(num_top_classes=5)
 
 examples = [
     [30, "M", "HIGH", "NORMAL", 15.4],
