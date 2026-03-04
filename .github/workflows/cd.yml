@@ -18,5 +18,7 @@ jobs:
         env:
           HF: ${{ secrets.HF }}
         run: |
+          # This ensures the newly installed pip packages are visible
+          export PATH=$PATH:$HOME/.local/bin
           make hf-login
           make deploy HF=$HF

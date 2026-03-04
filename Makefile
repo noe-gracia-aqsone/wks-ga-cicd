@@ -24,14 +24,12 @@ update-branch:
 	git push --force origin HEAD:update
 
 hf-login:
-	git pull origin update
-	git switch update
 	pip install -U "huggingface_hub[cli]"
-	python -m huggingface_hub.commands.huggingface_cli login --token $(HF) --add-to-git-credential
+	python -m huggingface_hub login --token $(HF) --add-to-git-credential
 
 push-hub:
-	python -m huggingface_hub.commands.huggingface_cli upload milotix/DrugClassification ./app --repo-type=space --commit-message="Sync App files"
-	python -m huggingface_hub.commands.huggingface_cli upload milotix/DrugClassification ./model /model --repo-type=space --commit-message="Sync Model"
-	python -m huggingface_hub.commands.huggingface_cli upload milotix/DrugClassification ./results /metrics --repo-type=space --commit-message="Sync Model"
+	python -m huggingface_hub upload milotix/DrugClassification ./app --repo-type=space --commit-message="Sync App files"
+	python -m huggingface_hub upload milotix/DrugClassification ./model /model --repo-type=space --commit-message="Sync Model"
+	python -m huggingface_hub upload milotix/DrugClassification ./results /metrics --repo-type=space --commit-message="Sync Model"
 
 deploy: hf-login push-hub
