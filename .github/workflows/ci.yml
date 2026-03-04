@@ -22,7 +22,6 @@ jobs:
       - name: Install Packages
         run: |
           make install
-          pip install dvc-hf
 
       - name: Train with DVC (HF remote)
         env:
