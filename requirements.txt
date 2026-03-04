@@ -3,5 +3,5 @@ skops
 black
 pandas
 matplotlib
-gradio>=5.0.0
-pyaudioop>=0.2.1
+gradio
+pyaudioop
