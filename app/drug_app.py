@@ -27,10 +27,12 @@ def predict_drug(age, sex, blood_pressure, cholesterol, na_to_k_ratio):
         str: Predicted drug label
     """
     features = [age, sex, blood_pressure, cholesterol, na_to_k_ratio]
-    predicted_drug = pipe.predict([features])[0]
-
-    label = f"Predicted Drug: {predicted_drug}"
-    return label
+    probabilities = pipe.predict_proba([features])[0]
+    class_probabilities = {
+        label: float(prob)
+        for label, prob in zip(pipe.classes_, probabilities)
+    }
+    return class_probabilities
 
 
 inputs = [
