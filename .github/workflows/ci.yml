@@ -23,10 +23,8 @@ jobs:
         run: |
           make install
 
-      - name: Train with DVC (HF remote)
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: make train_dvc HF_TOKEN=$HF_TOKEN
+      - name: Train with DVC import (HF source)
+        run: make train_dvc
 
       - name: Create CML report
         env:

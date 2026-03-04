@@ -16,16 +16,14 @@ train:
 	python train.py
 
 # Minimal DVC + HF flow for class exercises.
-# Requires a preconfigured DVC remote named "myremote" with hf://datasets/<user>/<repo>.
+# This repo uses `dvc import` from Hugging Face (no writable DVC remote required).
 setup_dvc_hf:
-	dvc remote modify myremote --local token $(HF_TOKEN)
+	@echo "Using DVC import workflow from Hugging Face (no remote token setup needed)."
 
-# Pull versioned data, run training, version outputs, and push artifacts to HF remote.
+# Pull imported dataset metadata/content and run training.
 train_dvc: setup_dvc_hf
-	dvc pull data
+	dvc pull data/drug200.csv.dvc
 	python train.py
-	dvc add model/drug_pipeline.skops results/metrics.txt results/model_results.png
-	dvc push
 
 # Simple CML report for students: metrics, figure, and DVC status.
 eval_cml_and_dvc:
