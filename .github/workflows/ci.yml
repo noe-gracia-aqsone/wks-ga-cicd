@@ -6,27 +6,30 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
-  
+
 permissions: write-all
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
       - uses: iterative/setup-cml@v2
+      - uses: iterative/setup-dvc@v1
+
       - name: Install Packages
-        run: make install
-      - name: Format
-        run: make format
-      - name: Train
-        run: make train
-      - name: Evaluation
+        run: |
+          make install
+          pip install dvc-hf
+
+      - name: Train with DVC (HF remote)
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: make train_dvc HF_TOKEN=$HF_TOKEN
+
+      - name: Create CML report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: make eval
-      - name: Update Branch
-        env:
-          NAME: ${{ secrets.USER_NAME }}
-          EMAIL: ${{ secrets.USER_EMAIL }}
-        run: make update-branch USER_NAME=$NAME USER_EMAIL=$EMAIL
-        
+        run: make eval_cml_and_dvc
