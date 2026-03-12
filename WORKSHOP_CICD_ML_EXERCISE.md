@@ -9,13 +9,16 @@ By the end, participants should be able to:
 - Publish a CML report as a PR comment.
 - (Optional) Deploy artifacts/app to Hugging Face Space.
 
-## Starting Point
-- Repository already contains:
-  - `train.py`
-  - `Makefile_to_complete` with ML/CML/DVC helper gaps
-  - `.github/workflows/ci_to_complete.yml` with TODO gaps
-  - `data/drug200.csv.dvc` imported from Hugging Face dataset
-  - `.github/workflows/cd.yml` for deployment after CI succeeds
+## Branch Purpose
+This `correction` branch contains only the completed reference implementation.
+
+Repository contents used as the reference solution:
+- `train.py`
+- `Makefile`
+- `.github/workflows/ci.yml`
+- `.github/workflows/cd.yml`
+- `dvc.yaml`
+- `data/drug200.csv.dvc`
 
 ## Prerequisites
 1. Create GitHub repository settings:
@@ -71,7 +74,7 @@ Notes:
 ## Exercise Steps
 
 ### Step 1: Complete workflow environment config
-Rename `.github/workflows/ci_to_complete.yml` to `.github/workflows/ci.yml`, then complete TODOs for:
+In the exercise branch, complete `.github/workflows/ci.yml` so it includes:
 - Python version variable
 - Hugging Face dataset variable
 - Hugging Face token secret
@@ -80,7 +83,7 @@ Expected result:
 - Workflow reads values from `vars` and `secrets`, not hardcoded values.
 
 ### Step 1b: Complete the Makefile
-Rename `Makefile_to_complete` to `Makefile`, then complete the missing commands.
+In the exercise branch, complete `Makefile` so the workflow can call the required targets.
 
 Expected result:
 - The workflow can run all required `make` targets without changing the workflow design.
@@ -110,6 +113,13 @@ Open `.github/workflows/cd.yml` and explain:
 
 Expected result:
 - Successful CI completion can trigger deployment to Hugging Face Space.
+
+## What To Compare Against
+Use this branch as the correction/reference for:
+- `.github/workflows/ci.yml`
+- `.github/workflows/cd.yml`
+- `Makefile`
+- `dvc.yaml`
 
 ## Validation Checklist
 - Workflow triggers on `pull_request` and `push` to `main`.
