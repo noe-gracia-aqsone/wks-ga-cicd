@@ -12,9 +12,10 @@ By the end, participants should be able to:
 ## Starting Point
 - Repository already contains:
   - `train.py`
-  - `Makefile` with ML/CML/DVC helpers
-  - `.github/workflows/ci.yml` with TODO gaps
+  - `Makefile_to_complete` with ML/CML/DVC helper gaps
+  - `.github/workflows/ci_to_complete.yml` with TODO gaps
   - `data/drug200.csv.dvc` imported from Hugging Face dataset
+  - `.github/workflows/cd.yml` for deployment after CI succeeds
 
 ## Prerequisites
 1. Create GitHub repository settings:
@@ -70,7 +71,7 @@ Notes:
 ## Exercise Steps
 
 ### Step 1: Complete workflow environment config
-Open `.github/workflows/ci.yml` and complete TODOs for:
+Rename `.github/workflows/ci_to_complete.yml` to `.github/workflows/ci.yml`, then complete TODOs for:
 - Python version variable
 - Hugging Face dataset variable
 - Hugging Face token secret
@@ -78,10 +79,16 @@ Open `.github/workflows/ci.yml` and complete TODOs for:
 Expected result:
 - Workflow reads values from `vars` and `secrets`, not hardcoded values.
 
+### Step 1b: Complete the Makefile
+Rename `Makefile_to_complete` to `Makefile`, then complete the missing commands.
+
+Expected result:
+- The workflow can run all required `make` targets without changing the workflow design.
+
 ### Step 2: Complete data + training stages
 Replace the combined training step with two clear steps:
-1. Pull data with DVC
-2. Train the model
+1. Pull data with DVC (you have the dvc file in `data/`)
+2. Reproduce the ML pipeline with DVC
 
 Expected result:
 - Logs clearly show data pull and model training as separate stages.
@@ -95,19 +102,20 @@ Expected result:
   - Confusion matrix image link
   - DVC status block
 
-### Step 4 (Optional): Add deploy job
-Create a `deploy-space` job:
-- Needs training job completion
-- Runs only on `push` to `main`
-- Uses `make deploy HF=${{ secrets.HF_TOKEN }}`
+### Step 4 (Optional): Inspect the deployment workflow
+Open `.github/workflows/cd.yml` and explain:
+- Why deployment is separated from CI
+- How `workflow_run` depends on CI success
+- Why the same `HF_TOKEN` secret is reused
 
 Expected result:
-- Successful main branch push updates Hugging Face Space content.
+- Successful CI completion can trigger deployment to Hugging Face Space.
 
 ## Validation Checklist
 - Workflow triggers on `pull_request` and `push` to `main`.
 - No hardcoded secret in YAML.
+- `Makefile` contains the commands required by the workflow.
 - DVC pull succeeds in CI logs.
-- `train.py` runs in CI and generates artifacts.
+- `dvc repro` runs in CI and generates artifacts.
 - PR contains CML comment.
-- Optional deploy job runs only for `main` push.
+- CD uses `HF_TOKEN` consistently.

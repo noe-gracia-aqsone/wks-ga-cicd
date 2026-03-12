@@ -1,0 +1,46 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  train-and-report:
+    runs-on: ubuntu-latest
+    # TODO 1: add an `env:` block with:
+    # - PYTHON_VERSION set to a stable version (example: "3.11")
+    # - HF_DATASET_URL from repository variable `vars.HF_DATASET_URL`
+    # - HF_TOKEN from repository secret `secrets.HF_TOKEN`
+    steps:
+      ### 
+      - uses: actions/checkout@v3
+
+      # TODO 2: configure Python using actions/setup-python.
+      # Use `python-version: ${{ env.PYTHON_VERSION }}`
+      #
+
+      # TODO 3: import also setup-cml with: vega: false
+      # and setup-dvc with no extra configuration
+      # and then complete the Makefile with the right commands 
+      # to generate a CML report and comment the PR with it
+      #
+  
+      - name: Install Packages
+        run: make install
+      # TODO 4: complete the step in Makefile
+     - name: Train with DVC import
+        run: make train_dvc
+
+      # TODO 5: add one step before report to print DVC status in logs.
+      # Example: `dvc status -c`
+
+      - name: Create CML report and comment PR
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HF_TOKEN: ${{ env.HF_TOKEN }}
+        run: make eval_cml_and_dvc

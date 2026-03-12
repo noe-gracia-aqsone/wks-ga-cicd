@@ -1,0 +1,11 @@
+stages:
+  train:
+    cmd: python train.py
+    deps:
+      - train.py
+      - data/drug200.csv
+    outs:
+      - model/drug_pipeline.skops
+      - results/model_results.png
+    metrics:
+      - results/metrics.txt

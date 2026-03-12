@@ -4,8 +4,8 @@ DATA_FILE ?= data/drug200.csv
 
 # Install Python dependencies used by training, evaluation, and deployment.
 install:
-	pip install --upgrade pip &&\
-		pip install -r requirements.txt
+	# TODO: upgrade pip and install dependencies from requirements.txt
+	@echo "TODO: implement install target"
 
 # Auto-format Python files in the repository root.
 format:
@@ -13,7 +13,8 @@ format:
 
 # Train the model and write artifacts under ./model and ./results.
 train:
-	dvc repro
+	# TODO: reproduce the DVC pipeline
+	@echo "TODO: implement train target"
 
 # Minimal DVC + HF flow for class exercises.
 # This repo uses `dvc import` from Hugging Face (no writable DVC remote required).
@@ -22,25 +23,15 @@ setup_dvc_hf:
 
 # Pull imported dataset metadata/content and run training.
 train_dvc: setup_dvc_hf
-	dvc pull data/drug200.csv.dvc
-	dvc repro
+	# TODO: pull the dataset tracked by DVC
+	# TODO: run the training pipeline through DVC
+	@echo "TODO: implement train_dvc target"
 
 # Simple CML report for students: metrics, figure, and DVC status.
 eval_cml_and_dvc:
-	echo "## Model Metrics" > report.md
-	cat ./results/metrics.txt >> report.md
-	echo "\n## Confusion Matrix Plot" >> report.md
-	echo '![Confusion Matrix](./results/model_results.png)' >> report.md
-	echo "\n## Data Version (DVC)" >> report.md
-	dvc status -c >> report.md 2>&1 || echo "DVC status unavailable" >> report.md
-	cml comment create report.md
-
-# Commit generated artifacts/metrics back to the update branch.
-update-branch:
-	git config --global user.name $(USER_NAME)
-	git config --global user.email $(USER_EMAIL)
-	git commit -am "Update with new results"
-	git push --force origin HEAD:update
+	# TODO: create report.md with metrics, image, and DVC status
+	# TODO: publish the report as a PR comment using CML
+	@echo "TODO: implement eval_cml_and_dvc target"
 
 # Authenticate Hugging Face CLI with token passed as HF=<token>.
 hf-login:
@@ -50,8 +41,6 @@ hf-login:
 	hf auth login --token $(HF) --add-to-git-credential
 
 # Upload app/model/metrics into the Hugging Face Space repository.
-# If model/results are managed with DVC remote (hf://datasets/...),
-# this target can be simplified to upload only app/ files.
 push-hub:
 	# Use the new 'hf upload' syntax
 	hf upload milotix/DrugClassification ./app . --repo-type=space --commit-message="Sync App files"
