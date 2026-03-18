@@ -1,5 +1,3 @@
-Main branch
-
 ---
 title: DrugClassification
 emoji: 🦀
