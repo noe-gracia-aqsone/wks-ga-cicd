@@ -30,7 +30,9 @@ jobs:
       #- uses: TODO: import setup-dvc
   
       - name: Install Packages
-        run: make install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
         
       # TODO 2: Pull imported dataset metadata/content and run training
       #- name: Train with DVC import
