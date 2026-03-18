@@ -12,35 +12,38 @@ permissions: write-all
 jobs:
   train-and-report:
     runs-on: ubuntu-latest
-    # TODO 1: add an `env:` block with:
-    # - PYTHON_VERSION set to a stable version (example: "3.11")
-    # - HF_DATASET_URL from repository variable `vars.HF_DATASET_URL`
-    # - HF_TOKEN from repository secret `secrets.HF_TOKEN`
+    env:
+          PYTHON_VERSION: "3.11"
+
     steps:
-      ### 
       - uses: actions/checkout@v3
 
-      # TODO 2: configure Python using actions/setup-python.
-      # Use `python-version: ${{ env.PYTHON_VERSION }}`
-      #
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      # TODO 3: import also setup-cml with: vega: false
+      # TODO 1: import setup-cml with: vega: false
       # and setup-dvc with no extra configuration
-      # and then complete the Makefile with the right commands 
-      # to generate a CML report and comment the PR with it
-      #
+      #- uses: TODO: import setup-cml
+      #  with:
+      #    vega: false
+      #- uses: TODO: import setup-dvc
   
       - name: Install Packages
         run: make install
-      # TODO 4: complete the step in Makefile
-     - name: Train with DVC import
-        run: make train_dvc
-
-      # TODO 5: add one step before report to print DVC status in logs.
-      # Example: `dvc status -c`
+        
+      # TODO 2: Pull imported dataset metadata/content and run training
+      #- name: Train with DVC import
+      #  run:
+        	# TODO: pull the dataset tracked by DVC
+        	# TODO: run the training pipeline through DVC repro
 
       - name: Create CML report and comment PR
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HF_TOKEN: ${{ env.HF_TOKEN }}
-        run: make eval_cml_and_dvc
+        run: |
+          echo "## Model Metrics" > report.md
+          cat ./results/metrics.txt >> report.md
+          echo -e "\n## Confusion Matrix Plot" >> report.md
+          echo '![Confusion Matrix](./results/model_results.png)' >> report.md
+          echo -e "\n## Data Version (DVC)" >> report.md
+          dvc status -c >> report.md 2>&1 || echo "DVC status unavailable" >> report.md
+          # TODO: CREATE CML MARKDOWN COMMENT
