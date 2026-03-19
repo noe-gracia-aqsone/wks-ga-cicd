@@ -1,3 +1,6 @@
+from pathlib import Path
+import json
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
@@ -5,6 +8,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder, StandardScaler
+
+# Ensure DVC outputs can be written in clean CI workspaces.
+Path("results").mkdir(parents=True, exist_ok=True)
+Path("model").mkdir(parents=True, exist_ok=True)
 
 # Load the data
 drug_df = pd.read_csv("data/drug200.csv")
@@ -33,7 +40,7 @@ transform = ColumnTransformer(
 pipe = Pipeline(
     steps=[
         ("preprocessing", transform),
-        ("model", RandomForestClassifier(n_estimators=100, random_state=125)),
+        ("model", RandomForestClassifier(n_estimators=80, max_depth=6, random_state=125)),
     ]
 )
 pipe.fit(X_train, y_train)
@@ -47,8 +54,8 @@ f1 = f1_score(y_test, predictions, average="macro")
 
 print("Accuracy:", str(round(accuracy, 2) * 100) + "%", "F1:", round(f1, 2))
 
-with open("results/metrics.txt", "w") as outfile:
-    outfile.write(f"\nAccuracy = {round(accuracy,2)}, F1 Score = {round(f1, 2)}.")
+with open("results/metrics.json", "w") as outfile:
+    json.dump({"accuracy": round(accuracy, 2), "f1": round(f1, 2)}, outfile, indent=2)
 
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix

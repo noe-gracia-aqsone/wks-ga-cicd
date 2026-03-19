@@ -10,15 +10,33 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - uses: iterative/setup-dvc@v1
+
+      - name: Install Packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -U "huggingface_hub[cli]"
+
+      - name: Rebuild deployment artifacts
+        run: |
+          dvc pull data/drug200.csv.dvc
+          dvc repro
 
       - name: Deployment To Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          # This ensures the newly installed pip packages are visible
-          export PATH=$PATH:$HOME/.local/bin
-          make deploy HF=$HF_TOKEN
+          hf auth login --token "$HF_TOKEN" --add-to-git-credential
+          hf upload milotix/DrugClassification ./app . --repo-type=space --commit-message "Sync app files"
+          hf upload milotix/DrugClassification ./model /model --repo-type=space --commit-message "Sync model"
+          hf upload milotix/DrugClassification ./results /metrics --repo-type=space --commit-message "Sync metrics"
