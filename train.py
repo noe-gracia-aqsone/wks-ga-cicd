@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
@@ -5,6 +7,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder, StandardScaler
+
+# Ensure DVC outputs can be written in clean CI workspaces.
+Path("results").mkdir(parents=True, exist_ok=True)
+Path("model").mkdir(parents=True, exist_ok=True)
 
 # Load the data
 drug_df = pd.read_csv("data/drug200.csv")
