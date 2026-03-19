@@ -40,7 +40,7 @@ transform = ColumnTransformer(
 pipe = Pipeline(
     steps=[
         ("preprocessing", transform),
-        ("model", RandomForestClassifier(n_estimators=80, max_depth=6, random_state=125)),
+        ("model", RandomForestClassifier(n_estimators=100, max_depth=8, random_state=125)),
     ]
 )
 pipe.fit(X_train, y_train)
