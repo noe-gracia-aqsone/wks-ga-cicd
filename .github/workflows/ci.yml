@@ -47,7 +47,8 @@ jobs:
           echo -e "\n## Confusion Matrix Plot" >> report.md
           echo '![Confusion Matrix](./results/model_results.png)' >> report.md
           echo -e "\n## Data Version (DVC)" >> report.md
-          dvc status -c >> report.md 2>&1 || echo "DVC status unavailable" >> report.md
+          echo "- Import repo: $(grep 'url:' data/drug200.csv.dvc | sed 's/.*url: //')" >> report.md
+          echo "- Locked revision: $(grep 'rev_lock:' data/drug200.csv.dvc | sed 's/.*rev_lock: //')" >> report.md
 
       - name: Comment PR with CML
         if: github.event_name == 'pull_request'
