@@ -8,4 +8,5 @@ stages:
       - model/drug_pipeline.skops
       - results/model_results.png
     metrics:
-      - results/metrics.json
+      - results/metrics.json:
+          cache: false
