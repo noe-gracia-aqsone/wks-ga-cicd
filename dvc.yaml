@@ -8,4 +8,4 @@ stages:
       - model/drug_pipeline.skops
       - results/model_results.png
     metrics:
-      - results/metrics.txt
+      - results/metrics.json
