@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -53,8 +54,8 @@ f1 = f1_score(y_test, predictions, average="macro")
 
 print("Accuracy:", str(round(accuracy, 2) * 100) + "%", "F1:", round(f1, 2))
 
-with open("results/metrics.txt", "w") as outfile:
-    outfile.write(f"\nAccuracy = {round(accuracy,2)}, F1 Score = {round(f1, 2)}.")
+with open("results/metrics.json", "w") as outfile:
+    json.dump({"accuracy": round(accuracy, 2), "f1": round(f1, 2)}, outfile, indent=2)
 
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
