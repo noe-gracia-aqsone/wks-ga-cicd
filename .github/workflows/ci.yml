@@ -40,7 +40,7 @@ jobs:
           dvc pull data/drug200.csv.dvc
           dvc repro
 
-      - name: Create CML report and comment PR
+      - name: Create CML report
         run: |
           echo "## Model Metrics" > report.md
           cat ./results/metrics.txt >> report.md
@@ -48,4 +48,10 @@ jobs:
           echo '![Confusion Matrix](./results/model_results.png)' >> report.md
           echo -e "\n## Data Version (DVC)" >> report.md
           dvc status -c >> report.md 2>&1 || echo "DVC status unavailable" >> report.md
+
+      - name: Comment PR with CML
+        if: github.event_name == 'pull_request'
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           cml comment create report.md
