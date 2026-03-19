@@ -1,4 +1,5 @@
 import gradio as gr
+import numpy as np
 import skops.io as sio
 
 # Get the list of ALL types found in the file
@@ -26,15 +27,18 @@ def predict_drug(age, sex, blood_pressure, cholesterol, na_to_k_ratio):
     Returns:
         str: Predicted drug label
     """
-    features = [age, sex, blood_pressure, cholesterol, na_to_k_ratio]
+    features = np.array(
+        [[age, sex, blood_pressure, cholesterol, na_to_k_ratio]],
+        dtype=object,
+    )
     try:
-        probabilities = pipe.predict_proba([features])[0]
+        probabilities = pipe.predict_proba(features)[0]
         return {
             str(label): float(prob)
             for label, prob in zip(pipe.classes_, probabilities)
         }
     except Exception:
-        predicted_drug = pipe.predict([features])[0]
+        predicted_drug = pipe.predict(features)[0]
         return str(predicted_drug)
 
 
