@@ -1,5 +1,6 @@
+numpy==1.26.4
 scikit-learn==1.2.2
-skops
+skops==0.13.0
 black
 pandas
 matplotlib
