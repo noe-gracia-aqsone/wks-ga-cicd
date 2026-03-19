@@ -1,1 +1,3 @@
 model/drug_pipeline.skops
+results/metrics.txt
+results/model_results.png
